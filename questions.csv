@@ -1,0 +1,9 @@
+category,question,answer,option1,option2,option3,option4,response1,response2,response3,response4
+Science,What is the largest planet in our solar system?,3,Jupiter,Earth,Saturn,Uranus,Incorrect,Incorrect,Correct,Incorrect
+Science,Which of the following scientists is credited with discovering gravity?,2,Isaac Newton,Galileo Galilei,Albert Einstein,Leonardo da Vinci,Incorrect,Correct,Incorrect,Incorrect
+History,Who was the leader of the Soviet Union during World War II?,1,Joseph Stalin,Vladimir Lenin,Leon Trotsky,Mikhail Gorbachev,Correct,Incorrect,Incorrect,Incorrect
+History,Which ancient civilization built the Great Pyramid of Giza?,1,Egyptians,Greeks,Romans,Mesopotamians,Correct,Incorrect,Incorrect,Incorrect
+Literature,Who wrote the classic novel 'Pride and Prejudice'?,1,Jane Austen,Charles Dickens,J.K. Rowling,Edgar Allan Poe,Correct,Incorrect,Incorrect,Incorrect
+Literature,"Which character says 'To be, or not to be: that is the question' in Shakespeare's Hamlet?",2,Hamlet,Macbeth,Othello,Romeo,Incorrect,Correct,Incorrect,Incorrect
+Technology,What is the primary function of a CPU (Central Processing Unit)?,2,Processing information,Storing data,Connecting devices,Providing power,Incorrect,Correct,Incorrect,Incorrect
+Technology,Which programming language was developed by Sun Microsystems?,1,Java,Python,C++,JavaScript,Correct,Incorrect,Incorrect,Incorrect

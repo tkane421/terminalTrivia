@@ -60,3 +60,8 @@ Timestamp,Category,Question,Selected Option,Correct Option,Is Correct,Attempts
 2024-11-12 17:16:41,Science,Which of the following scientists is credited with discovering gravity?,4,4,True,1
 2024-11-12 17:16:57,Science,What is the largest planet in our solar system?,2,2,True,1
 2024-11-12 17:16:58,Science,Which of the following scientists is credited with discovering gravity?,3,3,True,1
+2025-04-30 14:41:50,Science,Which of the following scientists is credited with discovering gravity?,4,2,False,3
+2025-04-30 14:42:02,Technology,Which programming language was developed by Sun Microsystems?,3,3,True,1
+2025-04-30 14:44:13,Literature,Who wrote the classic novel 'Pride and Prejudice'?,1,1,True,1
+2025-04-30 14:44:16,Science,What is the largest planet in our solar system?,1,1,True,1
+2025-04-30 14:47:43,History,Who was the leader of the Soviet Union during World War II?,4,4,True,1

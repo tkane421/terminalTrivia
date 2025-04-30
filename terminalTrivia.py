@@ -1,7 +1,19 @@
+# Python v3.10.12+
+
 import csv
 import os.path
 import random
 from datetime import datetime
+from colorama import init, Fore, Style
+import textwrap
+
+#Initialise colorama
+init()
+
+def wrap_text(text, width=80):
+    wrapper = textwrap.TextWrapper(width=width)
+    wrapped_text = wrapper.fill(text)
+    return wrapped_text
 
 def list_categories(file_path):
     with open(file_path, newline='') as csvfile:
@@ -25,14 +37,14 @@ def get_overall_stats(output_file_path):
             reader = csv.DictReader(csvfile)
             for row in reader:
                 total_questions_asked += 1
-                if row['Is Correct'] == 'True':
+                if row['Is Correct'].lower() == 'true':
                     total_correct_answers += 1
 
                 category = row['Category']
                 if category not in category_stats:
                     category_stats[category] = {'questions_asked': 0, 'correct_answers': 0}
                 category_stats[category]['questions_asked'] += 1
-                if row['Is Correct'] == 'True':
+                if row['Is Correct'].lower() == 'true':
                     category_stats[category]['correct_answers'] += 1
 
     if total_questions_asked > 0:
@@ -40,26 +52,30 @@ def get_overall_stats(output_file_path):
     else:
         overall_percentage_correct = 0.0
 
-    print(
-        f"Overall Total: {total_correct_answers} of {total_questions_asked} questions correct ({overall_percentage_correct:.2f}%)\n")
-
-    # for category, stats in category_stats.items():
-    #     if stats['questions_asked'] >= 10:
-    #         percentage_correct = (stats['correct_answers'] / stats['questions_asked']) * 100
+    print(Fore.CYAN + Style.BRIGHT + f"\nOverall Total: {total_correct_answers} of {total_questions_asked} questions "
+                                     f"correct ({overall_percentage_correct:.2f}%)\n" + Fore.RESET + Style.RESET_ALL)
 
     return category_stats
 
 def display_category_summary(category_stats):
-    print("Updated Overall Summary of Categories:")
+    print("Updated Overall Summary of Categories:\n")
     for category, stats in category_stats.items():
         percentage_correct = (stats['correct_answers'] / stats['questions_asked']) * 100
         status = ""
         if stats['questions_asked'] >= 10:
             if percentage_correct > 90:
                 status = " (STRONG)"
+                print(Fore.GREEN + Style.BRIGHT + f"{category}{status}: {stats['questions_asked']} questions asked, "
+                                                  f"{percentage_correct:.2f}% correct" + Fore.RESET + Style.RESET_ALL)
             elif percentage_correct < 30:
                 status = " (WEAK)"
-        print(f"{category}{status}: {stats['questions_asked']} questions asked, {percentage_correct:.2f}% correct")
+                print(Fore.RED + Style.BRIGHT + f"{category}{status}: {stats['questions_asked']} questions asked, "
+                                                  f"{percentage_correct:.2f}% correct" + Fore.RESET + Style.RESET_ALL)
+            else:
+                print(
+                    f"{category}{status}: {stats['questions_asked']} questions asked, {percentage_correct:.2f}% correct")
+        else:
+            print(f"{category}{status}: {stats['questions_asked']} questions asked, {percentage_correct:.2f}% correct")
 
 def quiz_from_csv(file_path, output_file_path):
     # Display overall stats from previous quizzes if output.csv exists
@@ -67,7 +83,7 @@ def quiz_from_csv(file_path, output_file_path):
 
     # List available categories with the number of questions available in each category
     category_counts = list_categories(file_path)
-    print("Available categories:\n")
+    print(Fore.GREEN + "Available categories:\n" + Fore.RESET)
     for category, count in category_counts.items():
         status = ""
         if category in category_stats and category_stats[category]['questions_asked'] >= 10:
@@ -140,7 +156,8 @@ def quiz_from_csv(file_path, output_file_path):
                 random.shuffle(options_with_responses)
 
                 # Find the new index of the correct answer
-                correct_answer = next(i for i, (index, option) in enumerate(options_with_responses) if index == answer) + 1
+                correct_answer = next(
+                    i for i, (index, option) in enumerate(options_with_responses) if index == answer) + 1
 
                 first_attempt = True
                 first_attempt_choice = None
@@ -148,9 +165,10 @@ def quiz_from_csv(file_path, output_file_path):
                 attempts = 0
 
                 while True:
-                    print(question)
-                    for i, (index, option) in enumerate(options_with_responses, 1):
-                        print(f"{i}. {option}")
+                    if attempts == 0:
+                        print(Fore.YELLOW + f"\n{wrap_text(question)}\n" + Fore.RESET)
+                        for i, (index, option) in enumerate(options_with_responses, 1):
+                            print(Fore.GREEN + f"{i}. " + Fore.RESET + f"{wrap_text(option)}")
 
                     user_input = input("Please select the correct option (1-4): ")
                     attempts += 1
@@ -163,14 +181,16 @@ def quiz_from_csv(file_path, output_file_path):
                             first_attempt_choice = user_choice
                         is_correct = user_choice == correct_answer
                         if is_correct:
-                            print(responses[f"option_{options_with_responses[user_choice - 1][0]}"])
+                            print(Fore.GREEN + Style.BRIGHT +
+                                  wrap_text(responses[f"option_{options_with_responses[user_choice - 1][0]}"])
+                                  + Fore.RESET + Style.RESET_ALL)
                             if first_attempt:
                                 correct_answers += 1
                             break
-
                         else:
-                            print(responses[f"option_{options_with_responses[user_choice - 1][0]}"])
-                            print("Incorrect. Please try again. \n")
+                            print(Fore.RED + Style.BRIGHT +
+                                  wrap_text(responses[f"option_{options_with_responses[user_choice - 1][0]}"]))
+                            print("Incorrect. Please try again. \n" + Fore.RESET + Style.RESET_ALL)
                             first_attempt = False
                     except(ValueError, KeyError):
                         print("Invalid input. Please enter a number between 1 and 4.\n")
@@ -190,7 +210,8 @@ def quiz_from_csv(file_path, output_file_path):
                 percentage_correct = (correct_answers / total_questions_asked) * 100
                 questions_remaining = n - total_questions_asked
                 print(
-                    f"Running total: {percentage_correct:.2f}% ({correct_answers} of {total_questions_asked} questions correct)")
+                    f"Running total: {percentage_correct:.2f}% ({correct_answers} of {total_questions_asked} "
+                    f"questions correct)")
                 print(f"{questions_remaining} questions remaining\n")
 
     # Display new overall summary of categories
